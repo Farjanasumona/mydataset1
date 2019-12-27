@@ -1,0 +1,55 @@
+im = imread('Sunflowers.jpg');
+im1 = im2uint8(im);
+a=imresize(im1,[8,8]);
+im2 = im2uint16(im);
+b=imresize(im2,[8,8]);
+im3 = im2double(im);
+c=imresize(im3,[8,8]);
+figure(1);
+subplot(2,2,1);imshow(im);title('Real');
+subplot(2,2,2);imshow(im1);title('UINT8');
+subplot(2,2,3);imshow(im2);title('UINT16');
+subplot(2,2,4);imshow(im3);title('DOUBLE');
+
+im4 = .299*im(:,:,1)+.587*im(:,:,2)+.114*im(:,:,3);%it forms weighted avg to account for human perception,green is more sensitive
+figure(2);
+subplot(2,1,1);imshow(im);title('main');
+subplot(2,1,2);imshow(im4);title('Gray image (by formula luminosity method)');
+
+im5 = im2bw(im,0.4);
+figure(3);
+subplot(2,1,1);imshow(im);title('main');
+subplot(2,1,2);imshow(im5);title('Black & White)');
+
+imr = im;
+imr(:,:,2) = 0;imr(:,:,3) = 0;
+img = im;
+img(:,:,1) = 0;img(:,:,3) = 0;
+imb = im;
+imb(:,:,1) = 0;imb(:,:,2) = 0;
+figure(4);
+subplot(2,2,1);imshow(im);title('main');
+subplot(2,2,2);imshow(imr);title('Red Comp');
+subplot(2,2,3);imshow(img);title('Green Comp');
+subplot(2,2,4);imshow(imb);title('Blue Comp');
+
+im6 = cat(3,im(:,:,1),im(:,:,2),im(:,:,3));
+figure(5);
+subplot(2,2,1);imshow(im(:,:,1));title('Red Comp');
+subplot(2,2,2);imshow(im(:,:,2));title('Green Comp');
+subplot(2,2,3);imshow(im(:,:,3));title('Blue Comp');
+subplot(2,2,4);imshow(im6);title('RGB');
+
+I2=im(:,end:-1:1,:);
+I3=im(end:-1:1,:,:);
+I4=im(end:-1:1,end:-1:1,:);
+figure(6);
+subplot(2,2,1);imshow(im);title('main');
+subplot(2,2,2); imshow(I2);title('mirror1');
+subplot(2,2,3); imshow(I3);title('mirror2');
+subplot(2,2,4); imshow(I4);title('mirror3');
+
+array = [ 114, 10, 50;87, 214, 130;70, 98, 107; 19, 114, 254;128, 212, 13];
+figure(7);
+image(array);
+imwrite(array,'flower.jpg');%imwrite(A,filename) writes image data A to the file specified by filename

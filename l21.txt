@@ -1,0 +1,16 @@
+I=imread('cameraman.tif');
+A = imrotate(I,-50,'bilinear','crop');%50deg clkwise
+B=imresize(I,8.25);%magnifying factor
+C=imresize(I,0.25);
+figure(1);subplot(2,2,1);imshow(I);title('origial image');
+subplot(2,2,2);imshow(A);title('rotate image');
+subplot(2,2,3);imshow(B);title('resize image(increased)');
+subplot(2,2,4);imshow(C);title('resize image(reduced)');
+
+img2=I/255*63;%input range is divided into equal spacing
+img3=I/255*127;
+img4=I/255*255;
+figure(2);subplot(2,2,1);imshow(I);title('original image');
+subplot(2,2,2);imshow(img2);title('Quantization when gray level=64');
+subplot(2,2,3);imshow(img3);title('Quantization when gray level=128');
+subplot(2,2,4);imshow(img4);title('Quantization when gray level=256');

@@ -1,0 +1,37 @@
+im1 = imread('horse.jpg');
+im2 = imread('leaf.jpg');
+[x,y,z]=size(im2);
+im3 = zeros(x,y,z,'uint8');
+im4 = zeros(x,y,z,'uint8');
+for i = 1:x
+    for j = 1:y
+        for k = 1:z
+            im3(i,j,k) = im1(i,j,k) + im2(i,j,k);
+        end
+    end
+end
+for i = 1:x
+    for j = 1:y
+        for k = 1:z
+            im4(i,j,k) = im1(i,j,k) - im2(i,j,k);
+        end
+    end
+end
+%k=imadd(im1,im2,'uint8');
+figure(1);
+subplot(2,2,1);imshow(im1);title('one');
+subplot(2,2,2);imshow(im2);title('another');
+subplot(2,2,3);imshow(im3);title('add of two image');
+subplot(2,2,4);imshow(im4);title('sub of two image');
+%k=imresize(im2,[10,10]);
+
+im3 = imread('Tulips.jpg');
+m = mean2(im3(:,:,:))
+im = im3 - m;
+im7=im3+m;
+im8=im3-170;
+figure(2);
+subplot(2,2,1);imshow(im3);title('main');
+subplot(2,2,2);imshow(im);title('Changed Brightness 1');
+subplot(2,2,3);imshow(im7);title('Changed Brightness 2');
+subplot(2,2,4);imshow(im8);title('Changed Brightness 3');

@@ -1,0 +1,40 @@
+I=imread('eight.tif');
+J=imnoise(I,'salt & pepper',0.03);
+K=medfilt2(J,[3 3]);
+L=medfilt2(J,[7 7]);
+figure(1);subplot(2,2,1);imshow(I);title('original');
+subplot(2,2,2);imshow(J);title('noised');
+subplot(2,2,3);imshow(K);title('filtered mask size 3*3');
+subplot(2,2,4);imshow(L);title('filtered mask size 7*7');
+
+H=fspecial('motion',55,50);%linear motion by 55 pixels with 50 degree
+j=imfilter(I,H);
+P=fspecial('disk',15);%circular avging filter with the scalar matrix side 2r+1 
+k=imfilter(I,P);
+N=fspecial('unsharp');
+l=imfilter(I,N);
+figure(2);subplot(2,2,1);imshow(I);title('original');
+subplot(2,2,2);imshow(j);title('motion blurred');
+subplot(2,2,3);imshow(k);title('disk blurred');
+subplot(2,2,4);imshow(l);title('unsharp blurred');
+O=fspecial('unsharp',0.3);
+m=imfilter(I,O);
+P=fspecial('unsharp',0.4);
+n=imfilter(I,P);
+Q=fspecial('unsharp',0.5);
+o=imfilter(I,Q);%filter multidimensuional arry 
+R=fspecial('unsharp',0.8);
+p=imfilter(I,R);
+figure(3);subplot(2,2,1);imshow(m);title('unsharp blurred with alpha=0.2');%alpha 0-1 er moddhe
+subplot(2,2,2);imshow(n);title('unsharp blurred with alpha=0.4');
+subplot(2,2,3);imshow(o);title('unsharp blurred with alpha=0.5');
+subplot(2,2,4);imshow(p);title('unsharp blurred with alpha=0.8');
+
+b1=imgaussfilt(I,2);
+b2=imgaussfilt(I,4);
+b3=imgaussfilt(I,8);
+figure(4);subplot(2,2,1);imshow(I);title('original');
+subplot(2,2,2);imshow(b1);title('blurred by sigma 2');%limit nai sigmar
+subplot(2,2,3);imshow(b2);title('blurred by sigma 4');
+subplot(2,2,4);imshow(b3);title('blurred by sigma 8');
+

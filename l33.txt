@@ -1,0 +1,179 @@
+a=imread('horse.jpg');
+
+level=0.5;
+
+i=im2bw(a,level);
+
+k=imresize(i,[5,5]);
+
+disp('enter the co-ordinate of p');
+x1=input('');
+y1=input('');
+disp('enter the co-ordinate of q');
+x2=input('');
+y2=input('');
+v=1;
+[present_paths,length_arr]=four_path(x1,y1,x2,y2,v,k,[],[],[]);
+if ~isempty(length_arr)
+    disp('        4-PATH       ');
+    for i=1:length(length_arr)
+        fprintf('4 Path no %i    distance : %i    path:',i,length_arr(i));
+        fprintf(' (%i,%i)',present_paths{i});
+        fprintf('\n');
+    end
+    m=min(length_arr);
+    j=0;
+    fprintf('\n shortest 4 path distance = %i\n',m);
+    for i=1:length(length_arr)
+        if length_arr(i)==m
+            j=j+1;
+            fprintf('shortest 4 path no %i:',j);
+            fprintf(' (%i,%i)',present_paths{i});
+            fprintf('\n');
+        end
+    end
+else
+    disp('There is no 4 path between this points');
+end
+fprintf('\n');
+[present_paths,length_arr]=eight_path(x1,y1,x2,y2,v,k,[],[],[]);
+if ~isempty(length_arr)
+    fprintf('          8-PATH       ');
+    for i=1:length(length_arr)
+        fprintf('8 path no %i    distance: %i    path:',i,length_arr(i));
+        fprintf(' (%i,%i)',present_paths{i});
+        fprintf('\n');
+    end
+    m=min(length_arr);
+    j=0;
+    fprintf('\nshortest 8 path distance = %i\n',m);
+    for i=1:length(length_arr)
+        if length_arr(i)==m
+            j=j+1;
+            fprintf('shortest 8 path no %i:',j);
+            fprintf(' (%i,%i)',present_paths{i});
+            fprintf('\n');
+        end
+    end
+else
+    disp('There is no 8 path between this points');
+end
+fprintf('\n');
+[present_paths,length_arr]=m_path(x1,y1,x2,y2,v,k,[],[],[]);
+if ~isempty(length_arr)
+    fprintf('       M-PATH         ');
+    for i=1:length(length_arr)
+        fprintf('m-path no %i    distance: %i    path:',i,length_arr(i));
+        fprintf(' (%i,%i)',present_paths{i});
+        fprintf('\n');
+    end
+    m=min(length_arr);
+    j=0;
+    fprintf('\nShortest m-Path distance = %i\n',m);
+    for i=1:length(length_arr)
+        if length_arr(i)==m
+            j=j+1;
+            fprintf('shortest m path no %i:',j);
+            fprintf(' (%i,%i)',present_paths{i});
+            fprintf('\n');
+        end
+    end
+else
+    disp('There is no m path between this points');
+end
+
+
+
+function [paths,n]=four_path(x1,y1,x2,y2,v,im,p,n,paths)
+p(end+1,:)=[x1,y1];
+if(x1==x2&&y1==y2)
+    n(end+1)=length(p)-1;
+    paths{end+1}=transpose(p);
+    return;
+end
+[r,c]=size(im);
+if(x1-1>0&&~ismember([x1-1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1)))
+    [paths,n]=four_path(x1-1,y1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&~ismember([x1+1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1)))
+    [paths,n]=four_path(x1+1,y1,x2,y2,v,im,p,n,paths);
+end
+if(y1-1>0&&~ismember([x1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1-1)))
+    [paths,n]=four_path(x1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(y1+1<c+1&&~ismember([x1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1+1)))
+    [paths,n]=four_path(x1,y1+1,x2,y2,v,im,p,n,paths);
+end
+end
+
+
+
+function [paths,n]=eight_path(x1,y1,x2,y2,v,im,p,n,paths)
+p(end+1,:)=[x1,y1];
+if(x1==x2&&y1==y2)
+    n(end+1)=length(p)-1;
+    paths{end+1}=transpose(p);
+    return;
+end
+[r,c]=size(im);
+if(x1-1>0&&~ismember([x1-1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1)))
+    [paths,n]=eight_path(x1-1,y1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&~ismember([x1+1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1)))
+    [paths,n]=eight_path(x1+1,y1,x2,y2,v,im,p,n,paths);
+end
+if(y1-1>0&&~ismember([x1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1-1)))
+    [paths,n]=eight_path(x1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(y1+1<c+1&&~ismember([x1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1+1)))
+    [paths,n]=eight_path(x1,y1+1,x2,y2,v,im,p,n,paths);
+end
+if(x1-1>0&&y1-1>0&&~ismember([x1-1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1-1)))
+    [paths,n]=eight_path(x1-1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&y1-1>0&&~ismember([x1+1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1-1)))
+    [paths,n]=eight_path(x1+1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(x1-1>0&&y1+1<c+1&&~ismember([x1-1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1+1)))
+    [paths,n]=eight_path(x1-1,y1+1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&y1+1<c+1&&~ismember([x1+1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1+1)))
+    [paths,n]=eight_path(x1+1,y1+1,x2,y2,v,im,p,n,paths);
+end
+end
+
+
+
+function [paths,n]=m_path(x1,y1,x2,y2,v,im,p,n,paths)
+p(end+1,:)=[x1,y1];
+if(x1==x2&&y1==y2)
+    n(end+1)=length(p)-1;
+    paths{end+1}=transpose(p);
+    return;
+end
+[r,c]=size(im);
+if(x1-1>0&&~ismember([x1-1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1)))
+    [paths,n]=m_path(x1-1,y1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&~ismember([x1+1,y1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1)))
+    [paths,n]=m_path(x1+1,y1,x2,y2,v,im,p,n,paths);
+end
+if(y1-1>0&&~ismember([x1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1-1)))
+    [paths,n]=m_path(x1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(y1+1<c+1&&~ismember([x1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1,y1+1)))
+    [paths,n]=m_path(x1,y1+1,x2,y2,v,im,p,n,paths);
+end
+if(x1-1>0&&y1-1>0&&~ismember([x1-1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1-1))&&mad(x1,y1,x1-1,y1-1,v,im)==1)
+    [paths,n]=m_path(x1-1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&y1-1>0&&~ismember([x1+1,y1-1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1-1))&&mad(x1,y1,x1+1,y1-1,v,im)==1)
+    [paths,n]=m_path(x1+1,y1-1,x2,y2,v,im,p,n,paths);
+end
+if(x1-1>0&&y1+1<c+1&&~ismember([x1-1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1-1,y1+1))&&mad(x1,y1,x1-1,y1+1,v,im)==1)
+    [paths,n]=m_path(x1-1,y1+1,x2,y2,v,im,p,n,paths);
+end
+if(x1+1<r+1&&y1+1<c+1&&~ismember([x1+1,y1+1],p,'rows')&&any(v==im(x1,y1))&&any(v==im(x1+1,y1+1))&&mad(x1,y1,x1+1,y1+1,v,im)==1)
+    [paths,n]=m_path(x1+1,y1+1,x2,y2,v,im,p,n,paths);
+end
+end

@@ -1,0 +1,17 @@
+I= imread('eight.tif');
+J = imnoise(I,'salt & pepper',0.1);
+figure(1);
+subplot(2,2,1);
+imshow(I);
+title('Original Image');
+subplot(2,2,2);
+imshow(J);
+title('Salt & Pepper Noise');
+Kaverage = filter2(fspecial('average',3),J)/255;
+subplot(2,2,3);
+imshow(Kaverage);
+title('average filtering');
+kmedian=medfilt2(J);
+subplot(2,2,4);
+imshow(kmedian);
+title('median filtering');

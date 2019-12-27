@@ -1,0 +1,60 @@
+a=imread('horse.jpg');
+
+level=0.5;
+
+i=im2bw(a,level);
+
+k=imresize(i,[5,5]);
+
+i=0;j=0;
+%imshow(a);
+disp('enter the co-ordinate of p');
+x=input('');
+y=input('');
+disp('enter the co-ordinate of q');
+x1=input('');
+y1=input('');
+v=[1];
+if(((x==x1-1&&y==y1)||(x==x1+1&&y==y1)||(x==x1&&y==y1+1)||(x==x1&&y==y1-1))&&any(v==k(x,y))&&any(v==k(x1,y1)))
+    disp('p and q are 4-Adjacent');
+    i=1;
+else
+    disp('p and q are not 4-Adjacent');
+end
+if(((x==x1-1&&y==y1-1)||(x==x1+1&&y==y1-1)||(x==x1-1&&y==y1+1)||(x==x1+1&&y==y1+1))&&any(v==k(x,y))&&any(v==k(x1,y1)))
+    j=1;
+end
+if(i==1||j==1)
+    disp('p and q are 8-Adjacent');
+else
+    disp('p and q are not 8-Adjacent');
+end
+if(i==1)
+    disp('p and q are m-Adjacent');
+else if(j==1&&mad(x,y,x1,y1,v,k)==1)
+    disp('p and q are m-Adjacent');
+    else
+        disp('p and q are not m-Adjacent');
+    end
+end
+
+
+
+function[x]=mad(x1,y1,x2,y2,v,im)
+x=1;
+if(x1==x2-1&&y1==y2-1&&(any(v==im(x1+1,y1))||any(v==im(x1,y1+1))))%any te man check r samne diagonalcheck
+    x=0;
+else if(x1==x2+1&&y1==y2-1&&(any(v==im(x1-1,y1))||any(v==im(x1,y1+1))))
+        x=0;
+    else if(x1==x2-1&&y1==y2+1&&(any(v==im(x1+1,y1))||any(v==im(x1,y1-1))))
+            x=0;
+        else if(x1==x2+1&&y1==y2+1&&(any(v==im(x1-1,y1))||any(v==im(x1,y1-1))))
+            x=0;
+            end
+        end
+    end
+end
+
+
+
+
